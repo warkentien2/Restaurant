@@ -88,7 +88,7 @@
 
           <!-- New Sign In Modal trigger -->
           <ul class="nav navbar-nav navbar-right">
-            <li><a data-toggle="modal" data-target="#loginModal">
+            <li><a id="loginModalBtn">
                 <span class="glyphicon glyphicon-log-in"></span> Login</a>
             </li>
           </ul>
@@ -238,15 +238,15 @@
           </div>
           <div class="col-xs-6 col-sm-2">
             <p style="padding:40px;"></p>
-            <a type="button" class="btn btn-block btn-warning"
-               data-toggle="modal" data-target="#reservationModal">Reserve Table
+            <a id="reservationModalBtn" type="button" class="btn btn-block btn-warning">
+              Reserve Table
             </a>
           </div>
         </div>
       </div>
     </header>
 
-    <div class='container'>
+    <div class='container'> <!-- main content -->
 
       <!-- Carousel -->
       <div class="row row-content">
@@ -471,6 +471,13 @@
         });
         $('#carousel-play').click(function(){
           $('#mycarousel').carousel('cycle');
+        });
+
+        $('#reservationModalBtn').click(function(){
+          $('#reservationModal').modal();
+        });
+        $('#loginModalBtn').click(function(){
+          $('#loginModal').modal();
         });
       });
     </script>
