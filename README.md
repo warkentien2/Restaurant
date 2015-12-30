@@ -21,9 +21,15 @@ developed for the 2nd course of the Full Stack specialization from The Hong Kong
     <li>$ npm install</li>
   </ul>
 </li>
+<li>install gulp plugins
+  <ul>
+    <li>$ npm install jshint gulp-jshint jshint-stylish gulp-imagemin gulp-concat gulp-uglify gulp-minify-css gulp-usemin gulp-cache gulp-changed gulp-rev gulp-rename gulp-notify  browser-sync del --save-dev</li>
+  </ul>
+</li>
 <li>create dist folder and serve up your website
   <ul>
     <li>$ gulp watch</li>
   </ul>
 </li>
+<li>reload webpage</li>
 </ol>
