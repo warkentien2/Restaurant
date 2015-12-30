@@ -1,6 +1,8 @@
 # Restaurant
 developed for the 2nd course of the Full Stack specialization from The Hong Kong University of Science and Technology
 
+<h3>Using Gulp</h3>
+<hr>
 <h4>in terminal:</h4>
 
 <ol>
@@ -21,7 +23,7 @@ developed for the 2nd course of the Full Stack specialization from The Hong Kong
 </li>
 <li>create dist folder and serve up your website
   <ul>
-    <li>$ grunt server</li>
+    <li>$ gulp watch</li>
   </ul>
 </li>
 </ol>
