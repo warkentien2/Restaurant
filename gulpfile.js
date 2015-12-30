@@ -48,35 +48,42 @@ gulp.task('copyfonts', ['clean'], function() {
   .pipe(gulp.dest('./dist/fonts'));
 });
 
-// Watch and BrowserSync
-gulp.task('watch', ['browser-sync'], function(){
-  // watch .js files
-  gulp.watch('{app/scripts/**/*.js, app/styles/**/*.css, app/**/*.html}',
-             ['usemin']);			                 // if param 1 changes, run param 2
-  // watch image files
+// Watch and browserSync
+gulp.task('watch', ['browser-sync'], function() {
+  // Watch .js files
+  gulp.watch('{app/scripts/**/*.js,app/styles/**/*.css,app/**/*.html}', ['usemin']);
+      // Watch image files
   gulp.watch('app/images/**/*', ['imagemin']); // if param 1 changes, run param 2
+
 });
 
-gulp.task('browser-sync', ['default'], function(){	// var name switching
-            // camelCase with '-'
-      // default task builds the distribution folder.
+gulp.task('browser-sync', ['default'], function () { // switch var name camelCase to '-'
+  // files to watch
+   var files = [
+      'app/**/*.html',
+      'app/styles/**/*.css',
+      'app/images/**/*.png',
+      'app/scripts/**/*.js',
+      'dist/**/*'
+   ];
 
-  var files = ['app/**/*.html', 'app/styles/**/*.css', 'app/images/**/*.png',
-               'app/scripts/**/*.js', 'dist/**/*' ];		// files to watch
-  browserSync.init(files, {
-    server: { baseDir: "dist", index: "menu.html" }	// default = index.html
-  });
-
-  // Watch any files in dist/, reload on change
+   browserSync.init(files, {
+      server: {
+         baseDir: "dist",
+         index: "menu.html"
+      },
+      reloadDelay: 2000
+   });  // default = index.html
+        // Watch any files in dist/, reload on change
   gulp.watch(['dist/**']).on('change', browserSync.reload);
-});						// gulp.watch is a built-in task
+});     // gulp.watch is a built-in task
 
 // Clean
 gulp.task('clean',function(){
   return del(['dist']);		// del is a node_module
 });
 
-// Default
+// Default              // default task builds the distribution folder.
 gulp.task('default', ['clean'], function(){
   gulp.start('usemin', 'imagemin', 'copyfonts'); 	// gulp.start built-in
 });
