@@ -6,6 +6,7 @@ angular.module('confusionApp', [])
 
     $scope.tab = 1; // sets tab 1 as "active"
     $scope.filtText = "";
+    $scope.showDetails = false;
 
     $scope.dishes = [
       {
@@ -63,8 +64,12 @@ angular.module('confusionApp', [])
       }
     };
 
-    this.isSelected = function(checkTab){
+    $scope.isSelected = function(checkTab){
       return ($scope.tab === checkTab);
     };
+
+    $scope.toggleDetails = function(){
+      $scope.showDetails = !$scope.showDetails;
+    }
 
   }]);
