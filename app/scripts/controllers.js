@@ -70,9 +70,9 @@ angular.module('confusionApp')
       }
     }
   }])
-  .controller('DishDetailController', ['$scope', '$routeParams', 'menuFactory', function($scope, $routeParams, menuFactory) {
+  .controller('DishDetailController', ['$scope', '$stateParams', 'menuFactory', function($scope, $stateParams, menuFactory) {
 
-    var dish = menuFactory.getDish(parseInt($routeParams.id, 10));
+    var dish = menuFactory.getDish(parseInt($stateParams.id, 10));
 
     $scope.dish = dish;
 
@@ -86,18 +86,34 @@ angular.module('confusionApp')
 
     $scope.submitComment = function () {
 
-        //Step 2: This is how you record the date
-        $scope.newComment.date = new Date().toISOString();
+      //Step 2: This is how you record the date
+      $scope.newComment.date = new Date().toISOString();
 
-        // Step 3: Push your comment into the dish's comment array
-        $scope.dish.comments.push($scope.newComment);
+      // Step 3: Push your comment into the dish's comment array
+      $scope.dish.comments.push($scope.newComment);
 
-        //Step 4: reset your form to pristine
-        $scope.commentForm.$setPristine();
+      //Step 4: reset your form to pristine
+      $scope.commentForm.$setPristine();
 
-        //Step 5: reset your JavaScript object that holds your comment
-        $scope.newComment = { author:"", rating:5, comment:"", date:"" };
+      //Step 5: reset your JavaScript object that holds your comment
+      $scope.newComment = { author:"", rating:5, comment:"", date:"" };
     }
+
+  }])
+  // implement the IndexController and About Controller here
+  .controller('IndexController', ['$scope', 'menuFactory', 'corporateFactory',
+  function($scope, menuFactory, corporateFactory) {
+
+    $scope.featDish = menuFactory.getDish(0);
+
+    $scope.featPromo = menuFactory.getPromotion(0);
+
+    $scope.featLeader = corporateFactory.getLeader(3);
+
+  }])
+  .controller('AboutController', ['$scope', 'corporateFactory', function($scope, corporateFactory) {
+
+    $scope.leaders = corporateFactory.getLeaders();
 
   }])
 ;

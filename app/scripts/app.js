@@ -1,19 +1,59 @@
 'use strict';
 
-angular.module('confusionApp', ['ngRoute'])
-.config(function($routeProvider) {
-  $routeProvider
-    .when('/contactus', {
-      templateUrl: 'contactus.html',
-      controller: 'ContactController'
+angular.module('confusionApp', ['ui.router'])
+.config(function($stateProvider, $urlRouterProvider) {
+  $stateProvider
+    .state('app', {		// route for the home page
+      url: '/',
+      views: {
+        'header': {
+          templateUrl: 'views/header.html'
+        },
+	      'content': {
+          templateUrl: 'views/home.html',
+          controller: 'IndexController'
+        },
+	      'footer': {
+          templateUrl: 'views/footer.html'
+        }
+      }
     })
-    .when('/menu', {
-      templateUrl: 'menu.html',
-      controller: 'MenuController'
+    .state('app.aboutus', {
+      url: 'aboutus',
+      views: {
+	      'content@': {
+          templateUrl: 'views/aboutus.html',
+          controller: 'AboutController'
+        }
+      }
     })
-    .when('/menu/:id', {
-      templateUrl: 'dishdetail.html',
-      controller: 'DishDetailController'
+    .state('app.contactus', {
+      url: 'contactus',
+      views: {
+	      'content@': {
+          templateUrl: 'views/contactus.html',
+          controller: 'ContactController'
+        }
+      }
     })
-    .otherwise('/contactus');	// homepage
+    .state('app.menu', {
+      url: 'menu',
+      views: {
+	      'content@': {
+          templateUrl: 'views/menu.html',
+          controller: 'MenuController'
+        }
+      }
+    })
+    .state('app.dishdetail', {
+      url: 'menu/:id',
+      views: {
+	      'content@': {
+          templateUrl: 'views/dishdetail.html',
+          controller: 'DishDetailController'
+        }
+      }
+    });
+
+  $urlRouterProvider.otherwise('/');
 });
