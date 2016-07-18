@@ -1,5 +1,15 @@
 'use strict';
 
+var pngquant = require('imagemin-pngquant');
+var mozjpeg = require('imagemin-mozjpeg');
+var gifsicle = require('imagemin-gifsicle');
+
+/* install specific versions:
+imagemin-pngquant@4.2.2
+imagemin-mozjpeg@5.1.0
+imagemin-gifsicle@4.2.0
+*/
+
 module.exports = function (grunt) {
 
   // Time how long tasks take. Can help when optimizing build times
@@ -10,20 +20,15 @@ module.exports = function (grunt) {
     useminPrepare: 'grunt-usemin'  // key task is part of value grunt-module
   });
 
+  // grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-contrib-imagemin');
+  grunt.loadNpmTasks('grunt-pngmin');
+
   // Define the configuration for all the tasks
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
 
     // Make sure code styles are up to par and there are no obvious mistakes
-    jshint: {
-      options: {
-    	  jshintrc: '.jshintrc',	// .jshintrc: json file with JSHint config
-	      reporter: require('jshint-stylish')
-      },
-      all: {
-	      src: ['Gruntfile.js', 'app/scripts/{,*/}*.js'] // list of files to check
-      }
-    },
     useminPrepare:{
       html: 'app/menu.html',
       options:{ dest: 'dist' }
@@ -44,6 +49,39 @@ module.exports = function (grunt) {
     cssmin: {
       dist: {}
     },
+    pngmin: {
+      compile: {
+        options: {
+          concurrency: 8,             // specify how many exucutables get spawned in parallel
+          ext: '.png',
+          force: true,               // use .png as extension for the optimized files
+          quality: '65-80',           // output quality should be between 65 and 80 like jpeg quality
+          speed: 1,                  // pngquant should be as fast as possible
+          iebug: true                 // optimize image for use in Internet Explorer 6
+        },
+        files: [
+          {
+            src: 'app/images/*.png',
+            dest: 'dist/images/'
+          }
+        ]
+      }
+    },
+    imagemin:{
+      png: {
+        options: {
+          optimizationLevel: 7,
+          // progressive: true,
+          use: [pngquant(), mozjpeg(), gifsicle()]
+        }, // options
+        files: [{
+          expand: true,
+          cwd: 'app/images/',
+          src: ['**/*.{png,jpg,jpeg,gif}'],
+          dest: 'dist/images/'
+        }] // files
+      } // target
+    }, // imagemin
     filerev:{
       options:{
 	       encoding: 'utf8', algorithm: 'md5', length: 20	// length of number
@@ -102,7 +140,11 @@ module.exports = function (grunt) {
       livereload:{
         options:{ livereload: '<%= connect.options.livereload %>' },
         files: ['app/{,*/}*.html','.tmp/styles/{,*/}*.css','app/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}']
-      }
+      },
+      imageopti: {
+        files: ['app/images/*.*'],
+        tasks: ['imagemin']
+      } // imageopti
     },
     connect:{
       options:{
@@ -125,7 +167,7 @@ module.exports = function (grunt) {
     }
   });
 
-  grunt.registerTask('build', ['clean','jshint','useminPrepare','concat','cssmin','uglify','copy','filerev','usemin']); // preforms tasks
+  grunt.registerTask('build', ['clean','useminPrepare','concat','cssmin','uglify','copy','filerev','usemin','imagemin','pngmin']); // preforms tasks
   grunt.registerTask('serve', ['build','connect:dist','watch']); // $ grunt serve
   grunt.registerTask('default', ['build']);   // $ grunt (specified $ grunt build)
 };
